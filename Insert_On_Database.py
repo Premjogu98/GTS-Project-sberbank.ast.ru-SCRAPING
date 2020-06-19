@@ -99,13 +99,13 @@ def check_Duplication(get_htmlSource, SegFeild,Hidden_Script,get_htmlsource_For_
             print("Code Reached On check_Duplication")
             return results
         except Exception as e:
-            mydb_L2L = DB_connection()
-            mycursorL2L = mydb_L2L.cursor()
+            mydb = DB_connection()
+            mycursor = mydb.cursor()
             Function_name: str = sys._getframe().f_code.co_name
             Error: str = str(e)
             sql1 = "INSERT INTO errorlog_tbl(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'" , "") + "','" + str(Function_name).replace("'" , "") + "','" + str(SegFeild[31]) + "')"
-            mycursorL2L.execute(sql1)
-            mydb_L2L.commit()
+            mycursor.execute(sql1)
+            mydb.commit()
             exc_type , exc_obj , exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print("Error ON : ", sys._getframe().f_code.co_name + "--> " + str(e) , "\n" , exc_type , "\n" , fname ,"\n" , exc_tb.tb_lineno)
@@ -124,28 +124,28 @@ def insert_in_Local(get_htmlSource , SegFeild,Hidden_Script,get_htmlsource_For_X
         Fileid = create_filename(get_htmlSource , SegFeild,Hidden_Script,get_htmlsource_For_XML_DATA)
     MyLoop = 0
     while MyLoop == 0:
-        mydb_Local = DB_connection()
-        mycursorLocal = mydb_Local.cursor()
+        mydb = DB_connection()
+        mycursor = mydb.cursor()
         sql = "INSERT INTO russia_tenders_tbl(EMail,add1,Country,Maj_Org,tender_notice_no,notice_type,Tenders_details,short_desc,est_cost,currency,doc_cost,doc_last,earnest_money,Financier,tender_doc_file,source)VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         val= (str(SegFeild[1]) , str(SegFeild[2]) , str(SegFeild[7]) , str(SegFeild[12]) , str(SegFeild[13]) , str(SegFeild[14]),
                 str(SegFeild[18]) , str(SegFeild[19]) , str(SegFeild[20]) , str(SegFeild[21]) , str(SegFeild[22]), str(SegFeild[24]),str(SegFeild[26]) ,str(SegFeild[27]),
                 str(SegFeild[28]) , str(SegFeild[31]))
         try:
-            mycursorLocal.execute(sql , val)
-            mydb_Local.commit()
-            mydb_Local.close()
-            mycursorLocal.close()
+            mycursor.execute(sql , val)
+            mydb.commit()
+            mydb.close()
+            mycursor.close()
             Global_var.inserted += 1
             print("Code Reached On insert_in_Local")
             MyLoop = 1
         except Exception as e:
-            mydb_L2L = DB_connection()
-            mycursorL2L = mydb_L2L.cursor()
+            mydb = DB_connection()
+            mycursor = mydb.cursor()
             Function_name :str = sys._getframe().f_code.co_name
             Error : str = str(e)
             sql1 = "INSERT INTO errorlog_tbl(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'","") + "','" + str(Function_name).replace("'","")+ "','"+str(SegFeild[31])+"')"
-            mycursorL2L.execute(sql1)
-            mydb_L2L.commit()
+            mycursor.execute(sql1)
+            mydb.commit()
             exc_type , exc_obj , exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print("Error ON : " , sys._getframe().f_code.co_name + "--> " + str(e) , "\n" , exc_type , "\n" ,fname , "\n" , exc_tb.tb_lineno)
@@ -193,14 +193,14 @@ def create_filename(get_htmlSource , SegFeild,Hidden_Script,get_htmlsource_For_X
             print("Code Reached On create_filename")
             return Fileid
         except Exception as e:
-            mydb_L2L = DB_connection()
-            mycursorL2L = mydb_L2L.cursor()
+            mydb = DB_connection()
+            mycursor = mydb.cursor()
             Function_name: str = sys._getframe().f_code.co_name
             Error: str = str(e)
             sql1 = "INSERT INTO errorlog_tbl(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'", "") + "','" + str(
                 Function_name).replace("'" , "") + "','" + str(SegFeild[31]) + "')"
-            mycursorL2L.execute(sql1)
-            mydb_L2L.commit()
+            mycursor.execute(sql1)
+            mydb.commit()
             exc_type , exc_obj , exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print("Error ON : " , sys._getframe().f_code.co_name + "--> " + str(e) , "\n" , exc_type , "\n" ,
@@ -245,8 +245,8 @@ def insert_L2L(SegFeild , Fileid):
     dms_downloadfiles_tbldatatype = "A"
     dms_entrynotice_tblnotice_type = '2'
     file_id = Fileid
-    mydb_L2L = DB_connection()
-    mycursorL2L = mydb_L2L.cursor()
+    mydb = DB_connection()
+    mycursor = mydb.cursor()
     if SegFeild[12] != "" and SegFeild[19] != "" and SegFeild[24] != "" and SegFeild[7] != "" and SegFeild[2] != "":
         dms_entrynotice_tblcompulsary_qc = "2"
     else:
@@ -257,18 +257,18 @@ def insert_L2L(SegFeild , Fileid):
         a4 = 0
         while a4 == 0:
             try:
-                mydb_L2L = DB_connection()
-                mycursorL2L = mydb_L2L.cursor()
-                mycursorL2L.execute(sql , val)
-                mydb_L2L.commit()
+                mydb = DB_connection()
+                mycursor = mydb.cursor()
+                mycursor.execute(sql , val)
+                mydb.commit()
                 a4 = 1
                 print("Code Reached On QCTenders")
             except Exception as e:
                 Function_name: str = sys._getframe().f_code.co_name
                 Error: str = e
                 sql1 = "INSERT INTO errorlog_tbl(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'" , "") + "','" + str(Function_name).replace("'" , "") + "','" + str(SegFeild[31]) + "')"
-                mycursorL2L.execute(sql1)
-                mydb_L2L.commit()
+                mycursor.execute(sql1)
+                mydb.commit()
                 exc_type , exc_obj , exc_tb = sys.exc_info()
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                 print("Error ON : " , sys._getframe().f_code.co_name + "--> " + str(e) , "\n" , exc_type , "\n" ,fname ,"\n" , exc_tb.tb_lineno)
@@ -280,12 +280,12 @@ def insert_L2L(SegFeild , Fileid):
     a5 = 0
     while a5 == 0:
         try:
-            mydb_L2L = DB_connection()
-            mycursorL2L = mydb_L2L.cursor()
-            mycursorL2L.execute(sql , val)
-            mydb_L2L.commit()
-            mydb_L2L.close()
-            mycursorL2L.close()
+            mydb = DB_connection()
+            mycursor = mydb.cursor()
+            mycursor.execute(sql , val)
+            mydb.commit()
+            mydb.close()
+            mycursor.close()
             print("Code Reached On insert_L2L")
             print('Live Tender')
             a5 = 1
@@ -293,10 +293,10 @@ def insert_L2L(SegFeild , Fileid):
             Function_name: str = sys._getframe().f_code.co_name
             Error: str = str(e)
             sql1 = "INSERT INTO errorlog_tbl(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'" , "") + "','" + str(Function_name).replace("'" , "") + "','" + str(SegFeild[31]) + "')"
-            mydb_L2L = DB_connection()
-            mycursorL2L = mydb_L2L.cursor()
-            mycursorL2L.execute(sql1)
-            mydb_L2L.commit()
+            mydb = DB_connection()
+            mycursor = mydb.cursor()
+            mycursor.execute(sql1)
+            mydb.commit()
             exc_type , exc_obj , exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print("Error ON : " , sys._getframe().f_code.co_name + "--> " + str(e) , "\n" , exc_type , "\n" ,fname ,"\n" , exc_tb.tb_lineno)
