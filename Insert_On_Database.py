@@ -14,18 +14,18 @@ def Local_connection():
     a = 0
     while a == 0:
         try:
-            File_Location = open("D:\\0 PYTHON EXE SQL CONNECTION & DRIVER PATH\\sberbank-ast.ru\\Location For Database & Driver.txt", "r")
-            TXT_File_AllText = File_Location.read()
-            Local_host = str(TXT_File_AllText).partition("Local_host=")[2].partition(",")[0].strip()
-            Local_user = str(TXT_File_AllText).partition("Local_user=")[2].partition(",")[0].strip()
-            Local_password = str(TXT_File_AllText).partition("Local_password=")[2].partition(",")[0].strip()
-            Local_db = str(TXT_File_AllText).partition("Local_db=")[2].partition(",")[0].strip()
-            Local_charset = str(TXT_File_AllText).partition("Local_charset=")[2].partition("\")")[0].strip()
-            mydb_Local = pymysql.connect(host=str(Local_host),
-                                         user=str(Local_user),
-                                         password=str(Local_password),
-                                         db=str(Local_db),
-                                         charset=str(Local_charset),
+            # File_Location = open("D:\\0 PYTHON EXE SQL CONNECTION & DRIVER PATH\\sberbank-ast.ru\\Location For Database & Driver.txt", "r")
+            # TXT_File_AllText = File_Location.read()
+            # Local_host = str(TXT_File_AllText).partition("Local_host=")[2].partition(",")[0].strip()
+            # Local_user = str(TXT_File_AllText).partition("Local_user=")[2].partition(",")[0].strip()
+            # Local_password = str(TXT_File_AllText).partition("Local_password=")[2].partition(",")[0].strip()
+            # Local_db = str(TXT_File_AllText).partition("Local_db=")[2].partition(",")[0].strip()
+            # Local_charset = str(TXT_File_AllText).partition("Local_charset=")[2].partition("\")")[0].strip()
+            mydb_Local = pymysql.connect(host='185.142.34.92',
+                                         user='ams',
+                                         password='TgdRKAGedt%h',
+                                         db='tenders_db',
+                                         charset='utf8',
                                          cursorclass=pymysql.cursors.DictCursor)
 
             a = 1
