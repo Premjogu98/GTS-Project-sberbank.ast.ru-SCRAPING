@@ -14,22 +14,22 @@ def Local_connection_links():
     a = 0
     while a == 0:
         try:
-            File_Location = open(
-                "D:\\0 PYTHON EXE SQL CONNECTION & DRIVER PATH\\sberbank-ast.ru\\Location For Database & Driver.txt",
-                "r")
-            TXT_File_AllText = File_Location.read()
+            # File_Location = open(
+            #     "D:\\0 PYTHON EXE SQL CONNECTION & DRIVER PATH\\sberbank-ast.ru\\Location For Database & Driver.txt",
+            #     "r")
+            # TXT_File_AllText = File_Location.read()
 
-            Local_host = str(TXT_File_AllText).partition("Local_host_link=")[2].partition(",")[0].strip()
-            Local_user = str(TXT_File_AllText).partition("Local_user_link=")[2].partition(",")[0].strip()
-            Local_password = str(TXT_File_AllText).partition("Local_password_link=")[2].partition(",")[0].strip()
-            Local_db = str(TXT_File_AllText).partition("Local_db_link=")[2].partition(",")[0].strip()
-            Local_charset = str(TXT_File_AllText).partition("Local_charset_link=")[2].partition("\")")[0].strip()
+            # Local_host = str(TXT_File_AllText).partition("Local_host_link=")[2].partition(",")[0].strip()
+            # Local_user = str(TXT_File_AllText).partition("Local_user_link=")[2].partition(",")[0].strip()
+            # Local_password = str(TXT_File_AllText).partition("Local_password_link=")[2].partition(",")[0].strip()
+            # Local_db = str(TXT_File_AllText).partition("Local_db_link=")[2].partition(",")[0].strip()
+            # Local_charset = str(TXT_File_AllText).partition("Local_charset_link=")[2].partition("\")")[0].strip()
 
-            connection = pymysql.connect(host=str(Local_host),
-                                         user=str(Local_user),
-                                         password=str(Local_password),
-                                         db=str(Local_db),
-                                         charset=str(Local_charset),
+            connection = pymysql.connect(host='185.142.34.92',
+                                         user='ams',
+                                         password='TgdRKAGedt%h',
+                                         db='tenders_db',
+                                         charset='utf8',
                                          cursorclass=pymysql.cursors.DictCursor)
             return connection
         except pymysql.connect  as e:
@@ -50,7 +50,7 @@ def Collect_Link():
             Links_List = []
             mydb_Local = Local_connection_links()
             mycursorLocal = mydb_Local.cursor()  # SELECT * FROM `Tenders_Russia`.`sberbank_temptbl` ORDER BY id DESC LIMIT 0, 500
-            mycursorLocal.execute("SELECT `doc_links` FROM `Tenders_Russia`.`sberbank_temptbl`  ORDER BY id DESC LIMIT "+str(Global_var.Number_Of_Links2)+", "+str(Global_var.Number_Of_Links)+"")
+            mycursorLocal.execute("SELECT `doc_links` FROM `sberbank_temptbl`  ORDER BY id DESC LIMIT "+str(Global_var.Number_Of_Links2)+", "+str(Global_var.Number_Of_Links)+"")
             rows = mycursorLocal.fetchall()
             mydb_Local.close()
             mycursorLocal.close()
@@ -150,7 +150,7 @@ def DeleteLink_From_Database(href):
     a5 = 0
     while a5 == 0:
         try:
-            mycursorLocal.execute("DELETE FROM `Tenders_Russia`.`sberbank_temptbl` WHERE `doc_links` = '"+str(href)+"'")
+            mycursorLocal.execute("DELETE FROM `sberbank_temptbl` WHERE `doc_links` = '"+str(href)+"'")
             mydb_Local.commit()
             Global_var.Delete_Link += 1
             print("Link Delete From Table")

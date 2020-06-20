@@ -103,7 +103,7 @@ def check_Duplication(get_htmlSource, SegFeild,Hidden_Script,get_htmlsource_For_
             mycursor = mydb.cursor()
             Function_name: str = sys._getframe().f_code.co_name
             Error: str = str(e)
-            sql1 = "INSERT INTO errorlog_tbl(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'" , "") + "','" + str(Function_name).replace("'" , "") + "','" + str(SegFeild[31]) + "')"
+            sql1 = "INSERT INTO errorlog_tbl(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'" , "''") + "','" + str(Function_name).replace("'" , "''") + "','" + str(SegFeild[31]) + "')"
             mycursor.execute(sql1)
             mydb.commit()
             exc_type , exc_obj , exc_tb = sys.exc_info()
@@ -126,8 +126,8 @@ def insert_in_Local(get_htmlSource , SegFeild,Hidden_Script,get_htmlsource_For_X
     while MyLoop == 0:
         mydb = DB_connection()
         mycursor = mydb.cursor()
-        sql = "INSERT INTO russia_tenders_tbl(EMail,add1,Country,Maj_Org,tender_notice_no,notice_type,Tenders_details,short_desc,est_cost,currency,doc_cost,doc_last,earnest_money,Financier,tender_doc_file,source)VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-        val= (str(SegFeild[1]) , str(SegFeild[2]) , str(SegFeild[7]) , str(SegFeild[12]) , str(SegFeild[13]) , str(SegFeild[14]),
+        sql = "INSERT INTO russia_tenders_tbl(Tender_ID, EMail,add1,Country,Maj_Org,tender_notice_no,notice_type,Tenders_details,short_desc,est_cost,currency,doc_cost,doc_last,earnest_money,Financier,tender_doc_file,source)VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        val= (str(Fileid) , str(SegFeild[1]) , str(SegFeild[2]) , str(SegFeild[7]) , str(SegFeild[12]) , str(SegFeild[13]) , str(SegFeild[14]),
                 str(SegFeild[18]) , str(SegFeild[19]) , str(SegFeild[20]) , str(SegFeild[21]) , str(SegFeild[22]), str(SegFeild[24]),str(SegFeild[26]) ,str(SegFeild[27]),
                 str(SegFeild[28]) , str(SegFeild[31]))
         try:
@@ -143,7 +143,7 @@ def insert_in_Local(get_htmlSource , SegFeild,Hidden_Script,get_htmlsource_For_X
             mycursor = mydb.cursor()
             Function_name :str = sys._getframe().f_code.co_name
             Error : str = str(e)
-            sql1 = "INSERT INTO errorlog_tbl(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'","") + "','" + str(Function_name).replace("'","")+ "','"+str(SegFeild[31])+"')"
+            sql1 = "INSERT INTO errorlog_tbl(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'","''") + "','" + str(Function_name).replace("'","''")+ "','"+str(SegFeild[31])+"')"
             mycursor.execute(sql1)
             mydb.commit()
             exc_type , exc_obj , exc_tb = sys.exc_info()
@@ -156,11 +156,11 @@ def insert_in_Local(get_htmlSource , SegFeild,Hidden_Script,get_htmlsource_For_X
 
 def create_filename(get_htmlSource , SegFeild,Hidden_Script,get_htmlsource_For_XML_DATA):
     a = 0
+    basename = "PYA329"
+    Current_dateTime = datetime.now().strftime("%Y%m%d%H%M%S%f")
+    Fileid = "".join([basename, Current_dateTime])
     while a == 0:
         try:
-            basename = "PYA329"
-            Current_dateTime = datetime.now().strftime("%Y%m%d%H%M%S%f")
-            Fileid = "".join([basename, Current_dateTime])
             File_path = "Z:\\" + Fileid + ".html"
             file1 = open(File_path, "w", encoding='utf-8')
             # string_Translate_Table = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\">" + \
@@ -180,7 +180,7 @@ def create_filename(get_htmlSource , SegFeild,Hidden_Script,get_htmlsource_For_X
             #                          SegFeild[24] + "</td></tr></table>"
             Final_Doc = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\"><BODY>" + get_htmlSource + "</BODY></html>"
             Final_HTML_Document = "<head><meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\" /><title>Tender Document</title>" + \
-                                  "<link rel=\"shortcut icon\" type=\"image/png\" href=\"https://www.tendersontime.com/favicon.ico\"/></head>" + \
+                                  "</head>" + \
                                    "<script>"+str(Hidden_Script)+"</script>\n"+str(get_htmlsource_For_XML_DATA)+"""<script>
                                    function OpenFile(TSCode, guid) {
                                     if (guid != "" && guid)
@@ -197,8 +197,8 @@ def create_filename(get_htmlSource , SegFeild,Hidden_Script,get_htmlsource_For_X
             mycursor = mydb.cursor()
             Function_name: str = sys._getframe().f_code.co_name
             Error: str = str(e)
-            sql1 = "INSERT INTO errorlog_tbl(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'", "") + "','" + str(
-                Function_name).replace("'" , "") + "','" + str(SegFeild[31]) + "')"
+            sql1 = "INSERT INTO errorlog_tbl(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'", "''") + "','" + str(
+                Function_name).replace("'" , "''") + "','" + str(SegFeild[31]) + "')"
             mycursor.execute(sql1)
             mydb.commit()
             exc_type , exc_obj , exc_tb = sys.exc_info()
@@ -242,6 +242,7 @@ def insert_L2L(SegFeild , Fileid):
         dms_downloadfiles_tblsave_status = '2'
         dms_downloadfiles_tblstatus = '2'
         dms_entrynotice_tbl_cqc_status = '2'
+
     dms_downloadfiles_tbldatatype = "A"
     dms_entrynotice_tblnotice_type = '2'
     file_id = Fileid
@@ -266,7 +267,7 @@ def insert_L2L(SegFeild , Fileid):
             except Exception as e:
                 Function_name: str = sys._getframe().f_code.co_name
                 Error: str = e
-                sql1 = "INSERT INTO errorlog_tbl(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'" , "") + "','" + str(Function_name).replace("'" , "") + "','" + str(SegFeild[31]) + "')"
+                sql1 = "INSERT INTO errorlog_tbl(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'" , "''") + "','" + str(Function_name).replace("'" , "''") + "','" + str(SegFeild[31]) + "')"
                 mycursor.execute(sql1)
                 mydb.commit()
                 exc_type , exc_obj , exc_tb = sys.exc_info()
@@ -292,7 +293,7 @@ def insert_L2L(SegFeild , Fileid):
         except Exception as e:
             Function_name: str = sys._getframe().f_code.co_name
             Error: str = str(e)
-            sql1 = "INSERT INTO errorlog_tbl(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'" , "") + "','" + str(Function_name).replace("'" , "") + "','" + str(SegFeild[31]) + "')"
+            sql1 = "INSERT INTO errorlog_tbl(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'" , "''") + "','" + str(Function_name).replace("'" , "''") + "','" + str(SegFeild[31]) + "')"
             mydb = DB_connection()
             mycursor = mydb.cursor()
             mycursor.execute(sql1)

@@ -523,6 +523,9 @@ def Scrap_data(get_htmlSource, href, browser,Hidden_Script,get_htmlsource_For_XM
                 a = False
                 if len(SegField[19]) >= 200:
                     SegField[19] = str(SegField[19])[:200]+'...'
+                if len(SegField[18]) >= 1500:
+                    SegField[18] = str(SegField[18])[:1500]+'...'
+
                 from Insert_On_Database import create_filename
                 check_date(get_htmlSource, SegField, Hidden_Script,get_htmlsource_For_XML_DATA)
             else:
