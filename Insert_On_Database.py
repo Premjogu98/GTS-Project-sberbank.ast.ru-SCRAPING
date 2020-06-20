@@ -231,7 +231,7 @@ def insert_L2L(SegFeild , Fileid):
     # South America-DWN1456891,Semi-Auto-DWN30531073,MFA-DWN0654200
     selector_id = ''
     select_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    is_english = '1'
+    is_english = '1' # 0 = English, 1 = Non-English
     if SegFeild[36] == "":
         dms_entrynotice_tblstatus = "1"
         dms_downloadfiles_tblsave_status = '1'
