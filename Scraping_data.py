@@ -34,7 +34,7 @@ app = wx.App()
 
 def Scrap_data(get_htmlSource, href, browser,Hidden_Script,get_htmlsource_For_XML_DATA):
     SegField = []
-    for data in range(42):
+    for data in range(45):
         SegField.append('')
     a = True
     while a == True:
@@ -421,7 +421,8 @@ def Scrap_data(get_htmlSource, href, browser,Hidden_Script,get_htmlsource_For_XM
 
                 if contract_price != '':
                     # contract_price = Translate(contract_price)
-                    contract_price = string.capwords(str(contract_price))
+                    SegField[20] = contract_price.strip()
+                    SegField[21] = 'RUB'
                 else:
                     pass
                 # ======================================================================================================================
@@ -514,6 +515,9 @@ def Scrap_data(get_htmlSource, href, browser,Hidden_Script,get_htmlsource_For_XM
                 SegField[27] = "0"
                 SegField[22] = "0"
                 SegField[26] = "0.0"
+
+                SegField[42] = SegField[7]
+                SegField[43] = ""
 
                 for SegIndex in range(len(SegField)):
                     print(SegIndex, end=' ')

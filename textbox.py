@@ -9,13 +9,13 @@ def Local_connection_links():
     a = 0
     while a == 0:
         try:
-            connection = pymysql.connect(host='192.168.0.100',
+            connection = pymysql.connect(host='185.142.34.92',
                                          user='ams',
-                                         password='amsbind',
-                                         db='Tenders_Russia',
+                                         password='TgdRKAGedt%h',
+                                         db='tenders_db',
                                          charset='utf8',
                                          cursorclass=pymysql.cursors.DictCursor)
-            sql = 'SELECT COUNT(*) FROM `Tenders_Russia`.`sberbank_temptbl`'
+            sql = 'SELECT COUNT(*) FROM `sberbank_temptbl`'
             cursor = connection.cursor()
             cursor.execute(sql)
             Links : str = cursor.fetchall()
