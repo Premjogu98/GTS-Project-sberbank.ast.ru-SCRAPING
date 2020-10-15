@@ -9,6 +9,7 @@ import Global_var
 import requests
 import html
 import wx
+from Insert_On_Database import create_filename
 app = wx.App()
 
 
@@ -280,31 +281,37 @@ def Scrap_data(get_htmlSource, href, browser,Hidden_Script,get_htmlsource_For_XM
                 Tender_No = ''
                 for Tender_No in browser.find_elements_by_xpath('//*[@content="leaf:purchCode"]'):
                     Tender_No = Tender_No.get_attribute('innerText').strip()
+                    break
 
                 if Tender_No == '':
                     for Tender_No in browser.find_elements_by_xpath('//*[@id="PurchaseInfo_PurchaseCode"]'):
                         Tender_No = Tender_No.get_attribute('innerText').strip()
+                        break
 
                 if Tender_No == '':
                     for Tender_No in browser.find_elements_by_xpath('//*[@id="Purchase_PurchaseCode"]'):
                         Tender_No = Tender_No.get_attribute('innerText').strip()
+                        break
 
                 if Tender_No == '':
                     for Tender_No in browser.find_elements_by_xpath('//*[@id="DynamicControlPurchaseInfo_PurchaseCode"]'):
                         Tender_No = Tender_No.get_attribute('innerText').strip()
+                        break
 
                 if Tender_No == '':
                     for Tender_No in browser.find_elements_by_xpath('//*[@id="PurchaseInfo_PurchaseCode"]'):
                         Tender_No = Tender_No.get_attribute('innerText').strip()
+                        break
 
                 if Tender_No == '':
                     for Tender_No in browser.find_elements_by_xpath('//*[@id="PurchaseInfoView_PurchaseCode"]'):
                         Tender_No = Tender_No.get_attribute('innerText').strip()
+                        break
 
                 if Tender_No == '':
                     for Tender_No in browser.find_elements_by_xpath('//*[@id="PurchaseInfo_PurchaseUTPCode"]'):
                         Tender_No = Tender_No.get_attribute('innerText').strip()
-
+                        break
                 if Tender_No != '':
                     SegField[13] = Tender_No.strip()
                 else:
@@ -421,7 +428,7 @@ def Scrap_data(get_htmlSource, href, browser,Hidden_Script,get_htmlsource_For_XM
 
                 if contract_price != '':
                     # contract_price = Translate(contract_price)
-                    SegField[20] = contract_price.strip()
+                    SegField[20] = contract_price.strip().replace(' ','').replace(',','')
                     SegField[21] = 'RUB'
                 else:
                     pass
@@ -455,10 +462,17 @@ def Scrap_data(get_htmlSource, href, browser,Hidden_Script,get_htmlsource_For_XM
                     ENI = string.capwords(str(ENI))
                 else:
                     pass
-
-                Tender_Details = 'Наименование процедуры: ' + str(Name_of_procedure) + '<br>\n''Метод определения поставщика (подрядчик, исполнитель): ' + str(purch_Type_Name) + '<br>\n''Тип процедуры: ' + str(Type_of_procedure) + \
-                                '<br>\n''промышленность: ' + str(Industry) + '<br>\n''Номенклатура заказа: ' + str(Order_nomenclature) + '<br>\n''Начальная (максимальная) цена контракта: ' + str(contract_price) + '<br>\n''Начальная (максимальная) цена контракта с заказчиком: ' + str(BidCurrency) + \
-                                '<br>\n''Номер процедуры UIS: ' + str(ENI)
+                Procurement_Items = ''
+                tr_count = 0
+                for item_name in browser.find_elements_by_xpath('//*[@id="PurchaseObjectPanel"]/tr/td[1]'):
+                    if tr_count == 2:
+                        item_name = item_name.get_attribute('innerText').strip()
+                        Procurement_Items += item_name + ', '
+                    else:
+                        tr_count += 1
+                if Procurement_Items != '':
+                    Procurement_Items = Procurement_Items.rstrip(', ').strip()
+                Tender_Details = 'Объекты закупки: '+Procurement_Items+'<br>\nТип процедуры: ' + str(Type_of_procedure) + '<br>\n''Начальная (максимальная) цена контракта: ' + str(contract_price) + '<br>\n''Начальная (максимальная) цена контракта с заказчиком: ' + str(BidCurrency) + '<br>\n''Номер процедуры UIS: ' + str(ENI)
                 SegField[18] = Tender_Details
 
                 # ====================================================== Title ================================================================
@@ -519,6 +533,19 @@ def Scrap_data(get_htmlSource, href, browser,Hidden_Script,get_htmlsource_For_XM
                 SegField[42] = SegField[7]
                 SegField[43] = ""
 
+                OKPD_CODE = ''
+                for okpd in browser.find_elements_by_xpath('//*[@content="leaf:code"]'):
+                    OKPD_CODE = okpd.get_attribute('innerText').strip()
+                    break
+                OKPD_MAIN = ''
+                if OKPD_CODE != '':
+                    OKPD2 = OKPD_CODE.split('.')
+                    for i in range(len(OKPD2)):
+                        if(i < 3):
+                            OKPD_MAIN += OKPD2[i] + '.'
+                    OKPD_MAIN = OKPD_MAIN.rstrip('.')
+                    SegField[29] = OKPD_MAIN
+
                 for SegIndex in range(len(SegField)):
                     print(SegIndex, end=' ')
                     print(SegField[SegIndex])
@@ -530,8 +557,11 @@ def Scrap_data(get_htmlSource, href, browser,Hidden_Script,get_htmlsource_For_XM
                 if len(SegField[18]) >= 1500:
                     SegField[18] = str(SegField[18])[:1500]+'...'
 
-                from Insert_On_Database import create_filename
-                check_date(get_htmlSource, SegField, Hidden_Script,get_htmlsource_For_XML_DATA)
+                if str(SegField[29]) != '':
+                    check_date(get_htmlSource, SegField, Hidden_Script,get_htmlsource_For_XML_DATA)
+                else:
+                    print('\n OKPD NOT FOUND \n')
+                    a = False
             else:
                 a = False
                 print('Purchaser Not Found')
