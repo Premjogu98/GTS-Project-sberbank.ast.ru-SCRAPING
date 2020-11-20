@@ -14,23 +14,7 @@ def Local_connection_links():
     a = 0
     while a == 0:
         try:
-            # File_Location = open(
-            #     "D:\\0 PYTHON EXE SQL CONNECTION & DRIVER PATH\\sberbank-ast.ru\\Location For Database & Driver.txt",
-            #     "r")
-            # TXT_File_AllText = File_Location.read()
-
-            # Local_host = str(TXT_File_AllText).partition("Local_host_link=")[2].partition(",")[0].strip()
-            # Local_user = str(TXT_File_AllText).partition("Local_user_link=")[2].partition(",")[0].strip()
-            # Local_password = str(TXT_File_AllText).partition("Local_password_link=")[2].partition(",")[0].strip()
-            # Local_db = str(TXT_File_AllText).partition("Local_db_link=")[2].partition(",")[0].strip()
-            # Local_charset = str(TXT_File_AllText).partition("Local_charset_link=")[2].partition("\")")[0].strip()
-
-            connection = pymysql.connect(host='185.142.34.92',
-                                         user='ams',
-                                         password='TgdRKAGedt%h',
-                                         db='tenders_db',
-                                         charset='utf8',
-                                         cursorclass=pymysql.cursors.DictCursor)
+            connection = pymysql.connect(host='185.142.34.92',user='ams',password='TgdRKAGedt%h',db='tenders_db',charset='utf8',cursorclass=pymysql.cursors.DictCursor)
             return connection
         except pymysql.connect  as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -50,7 +34,8 @@ def Collect_Link():
             Links_List = []
             mydb_Local = Local_connection_links()
             mycursorLocal = mydb_Local.cursor()  # SELECT * FROM `Tenders_Russia`.`sberbank_temptbl` ORDER BY id DESC LIMIT 0, 500
-            mycursorLocal.execute("SELECT `doc_links` FROM `sberbank_temptbl`  ORDER BY id DESC LIMIT "+str(Global_var.Number_Of_Links2)+", "+str(Global_var.Number_Of_Links)+"")
+            # mycursorLocal.execute("SELECT `doc_links` FROM `sberbank_temptbl` ORDER BY id DESC LIMIT "+str(Global_var.Number_Of_Links2)+", "+str(Global_var.Number_Of_Links)+"")
+            mycursorLocal.execute("SELECT `doc_links` FROM `sberbank_temptbl` ORDER BY id DESC")
             rows = mycursorLocal.fetchall()
             mydb_Local.close()
             mycursorLocal.close()
@@ -74,30 +59,14 @@ def Collect_Link():
 
 
 def Nav_Links(Links_List):
-    # File_Location = open(
-    #     "C:\\0 PYTHON EXE SQL CONNECTION & DRIVER PATH\\sberbank-ast.ru\\Location For Database & Driver.txt", "r")
-    # TXT_File_AllText = File_Location.read()
-    # Chromedriver = str(TXT_File_AllText).partition("Driver=")[2].partition("\")")[0].strip()
-    browser = webdriver.Chrome(executable_path=str(f"C:\\chromedriver.exe"))
-    browser.get(
-        """https://chrome.google.com/webstore/detail/browsec-vpn-free-and-unli/omghfjlpggmjjaagoclmmobgdodcjboh?hl=en" ping="/url?sa=t&amp;source=web&amp;rct=j&amp;url=https://chrome.google.com/webstore/detail/browsec-vpn-free-and-unli/omghfjlpggmjjaagoclmmobgdodcjboh%3Fhl%3Den&amp;ved=2ahUKEwivq8rjlcHmAhVtxzgGHZ-JBMgQFjAAegQIAhAB""")
-    for Add_Extension in browser.find_elements_by_xpath('/html/body/div[4]/div[2]/div/div/div[2]/div[2]/div'):
-        Add_Extension.click()
-        break
-    import wx
-    app = wx.App()
-    wx.MessageBox(' -_-  Add Extension and Select Proxy Between 25 SEC -_- ', 'Info', wx.OK | wx.ICON_WARNING)
-    time.sleep(25)  # WAIT UNTIL CHANGE THE MANUAL VPN SETTING
-    browser.set_window_size(1024, 600)
+    chrome_options = Options()
+    chrome_options.add_extension('C:\\BrowsecVPN.crx')
+    browser = webdriver.Chrome(executable_path=str(f"C:\\chromedriver.exe"),chrome_options=chrome_options)
     browser.maximize_window()
-    # browser.switch_to.window(browser.window_handles[1])
-    # browser.close()
-    # browser.switch_to.window(browser.window_handles[0])
-    # time.sleep(2)
-    time.sleep(1)
-    # browser.switch_to.window(browser.window_handles[1])
-    # browser.close()
-    # browser.switch_to.window(browser.window_handles[0])
+    # browser.get("""https://chrome.google.com/webstore/detail/browsec-vpn-free-and-unli/omghfjlpggmjjaagoclmmobgdodcjboh?hl=en" ping="/url?sa=t&amp;source=web&amp;rct=j&amp;url=https://chrome.google.com/webstore/detail/browsec-vpn-free-and-unli/omghfjlpggmjjaagoclmmobgdodcjboh%3Fhl%3Den&amp;ved=2ahUKEwivq8rjlcHmAhVtxzgGHZ-JBMgQFjAAegQIAhAB""")
+    wx.MessageBox(' -_-  Add Extension and Select Proxy Between 10 SEC -_- ', 'Info', wx.OK | wx.ICON_WARNING)
+    time.sleep(15)  # WAIT UNTIL CHANGE THE MANUAL VPN SETtING
+    
     time.sleep(2)
     for href in Links_List:
         loop = 0
